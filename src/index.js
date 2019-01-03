@@ -5,7 +5,7 @@ const Slack = require('slack-devkit');
 const db = require('./firebase/init')
 
 const { server } = new Slack({
-    scope: 'chat:write,bot',
+    scope: 'chat:write,bot,chat:write:bot',
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
     signing_secret: process.env.SIGNING_SECRET
@@ -17,6 +17,7 @@ server.post('/actions', (req, res) => {
         token:process.env.TOKEN,
         name:process.env.NAME
     })
+    console.log(bot)
     bot.on("start", function() {
       const {_value:{members}} = bot.getUsers();
       const data_users = members.map(d => {
