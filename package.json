@@ -1,0 +1,22 @@
+{
+  "name": "NamastopBackend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "firebase": "^4.13.1",
+    "query-string": "^6.2.0",
+    "request-promise-native": "^1.0.5",
+    "slack-devkit": "^1.2.3",
+    "slackbots": "^1.2.0"
+  },
+  "devDependencies": {
+    "dotenv": "^6.2.0"
+  }
+}
