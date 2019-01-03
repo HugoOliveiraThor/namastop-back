@@ -17,9 +17,11 @@ server.post('/actions', (req, res) => {
         token:process.env.TOKEN,
         name:process.env.NAME
     })
-    console.log(bot)
-    bot.on("start", function() {
-      const {_value:{members}} = bot.getUsers();
+    bot.on("start", async function() {
+      const {members} = await bot.getUsers();
+      const user = req.slack;
+      const userWhoSendMessage = {id:user.user_id,text:user.text} 
+      
       const data_users = members.map(d => {
         return {
           id:d.id,
@@ -30,23 +32,29 @@ server.post('/actions', (req, res) => {
           date: new Date()
         }
       })
-      const user = req.slack;
-      const data = {id:user.user_id,text:user.text}
       
-      bot.getUserId(_extractValueFromArroba(data.text)).then((result) => {
-          const valor = data_users.find(d => d.id === data.id)
-          valor.text = _extractValueBeginArroba(data.text) ? _extractValueBeginArroba(data.text) : 'You dont send any message'
-          const newUser = data_users.find(d => d.id === result)
-          valor.sendToWho = result ? result : null
-          valor.idToWho = newUser.id;
-          valor.realNameWhoReceive = newUser.real_name;
-          valor.photoWhoReceive = newUser.photo;
+      // console.log('user', data)
+      const getIdUserWhoWillReceiveTheMessage = await bot.getUserId(_extractValueFromArroba(userWhoSendMessage.text))
+      console.log('DataUser',getIdUserWhoWillReceiveTheMessage)
+      const nameOfTheUserWhoReceiveTheMessage = data_users.find(d => d.id === getIdUserWhoWillReceiveTheMessage)
+      const extractValueText = _extractValueBeginArroba(userWhoSendMessage.text) ? _extractValueBeginArroba(userWhoSendMessage.text) : 'You dont send any message' 
+      console.log(extractValueText)
+      
+      
+      // bot.getUserId(_extractValueFromArroba(data.text)).then((result) => {
+      //     const valor = data_users.find(d => d.id === data.id)
+      //     valor.text = _extractValueBeginArroba(data.text) ? _extractValueBeginArroba(data.text) : 'You dont send any message'
+      //     const newUser = data_users.find(d => d.id === result)
+      //     valor.sendToWho = result ? result : null
+      //     valor.idToWho = newUser.id;
+      //     valor.realNameWhoReceive = newUser.real_name;
+      //     valor.photoWhoReceive = newUser.photo;
 
-          console.log('Valor', valor)
-          if(user && user !== 'USLACKBOT') {
-            addToCollection(valor)   
-         }
-      })  
+      //     console.log('Valor', valor)
+      //     if(user && user !== 'USLACKBOT') {
+      //       addToCollection(valor)   
+      //    }
+      // })  
     });
     return res.json({})
 });
