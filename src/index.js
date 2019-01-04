@@ -36,10 +36,17 @@ server.post('/actions', (req, res) => {
       // console.log('user', data)
       const getIdUserWhoWillReceiveTheMessage = await bot.getUserId(_extractValueFromArroba(userWhoSendMessage.text))
       console.log('DataUser',getIdUserWhoWillReceiveTheMessage)
-      const nameOfTheUserWhoReceiveTheMessage = data_users.find(d => d.id === getIdUserWhoWillReceiveTheMessage)
-      const nameOfTheUserWhoSendTheMessge = data_users.find(d => d.id === userWhoSendMessage.id)
-      const extractValueText = _extractValueBeginArroba(userWhoSendMessage.text) ? _extractValueBeginArroba(userWhoSendMessage.text) : 'You dont send any message' 
-      console.log(nameOfTheUserWhoSendTheMessge)
+      const recipient = data_users.find(d => d.id === getIdUserWhoWillReceiveTheMessage)
+      const sender = data_users.find(d => d.id === userWhoSendMessage.id)
+      const text = _extractValueBeginArroba(userWhoSendMessage.text) ? _extractValueBeginArroba(userWhoSendMessage.text) : 'You dont send any message'
+      
+      console.log('recipient',recipient)
+      console.log('sender', sender)
+
+      // recipient = '', sender=
+
+      // recipient = 'recebedor'
+      // sender = 'enviando'
       
       
       // bot.getUserId(_extractValueFromArroba(data.text)).then((result) => {
